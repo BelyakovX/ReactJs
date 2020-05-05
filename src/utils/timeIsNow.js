@@ -1,5 +1,4 @@
 
-
 export default () => {
   const date = new Date();
   let hours = date.getHours();
