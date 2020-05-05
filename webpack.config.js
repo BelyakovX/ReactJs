@@ -1,7 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  entry: './static_src/index.jsx',
+  entry: {
+    app: './static_src/index.jsx',
+  },
   output: {
     path: path.resolve(__dirname, 'static/build'),
     filename: 'app.js',
@@ -24,6 +26,16 @@ module.exports = {
               presets: ['@babel/preset-env', '@babel/preset-react'],
             },
           },
+        ],
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader',
         ],
       },
     ],
