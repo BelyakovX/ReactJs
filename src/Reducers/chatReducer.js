@@ -5,12 +5,12 @@ import { ADD_CHAT, DELETE_CHAT, BLINK_CHAT } from '../Actions/chatActions';
 const initialStore = {
   chats: [
     {
-      title: 'Алексей Беляков',
+      title: 'Беляков Алексей',
       messageList: [0],
       unreadMessage: false,
     },
     {
-      title: 'Алексей Беляков',
+      title: 'Беляков Алексей',
       messageList: [1],
       unreadMessage: false,
     },
