@@ -1,5 +1,4 @@
 
-
 import update from 'react-addons-update';
 import { SEND_MESSAGE } from '../Actions/messageActions';
 
@@ -17,6 +16,7 @@ export default function chatReducer(store = initialStore, action) {
       messages: { $merge: { [action.messageId]: { text: action.text, sender: action.sender } } },
     });
   }
+
   default:
     return store;
   }
