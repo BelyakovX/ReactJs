@@ -1,8 +1,3 @@
-/**
- * Created by Korepanov Grigorii on 12.11.2019
- * grigoriikorepanov@gmail.com
- * t.me/loovery
- */
 
 import update from 'react-addons-update';
 import { SEND_MESSAGE } from '../Actions/messageActions';
