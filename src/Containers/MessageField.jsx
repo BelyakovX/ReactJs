@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { Redirect } from 'react-router-dom';
 import connect from 'react-redux/es/connect/connect';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import Message from '../Components/Message';
+import { botPhrases } from '../utils';
 import { sendMessage } from '../Actions/messageActions';
 
 class MessageField extends Component {
@@ -14,12 +14,28 @@ class MessageField extends Component {
 
     this.state = {
       input: '',
+      overloadBot: {
+        timer: null,
+        tick: 0,
+      },
     };
 
     this.chatWindow = React.createRef();
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleChange.bind(this);
+    this.handleKeyUp.bind(this);
+  }
+
+  botSendMessage() {
+    const { overloadBot } = this.state;
+    const { chatId, messages } = this.props;
+    clearTimeout(overloadBot.timer);
+    overloadBot.timer = setTimeout(() => {
+      overloadBot.tick = 0;
+
+      const messageId = Object.keys(messages).length + 1;
+      this.props.sendMessage(messageId, botPhrases(), 'bot', chatId);
+    }, 1000);
   }
 
   handleSendMessage(text, sender) {
@@ -31,6 +47,9 @@ class MessageField extends Component {
 
       this.props.sendMessage(messageId, text, sender, chatId);
 
+      if (sender !== 'bot') {
+        this.botSendMessage();
+      }
       this.setState({ input: '' });
       const chatWindow = this.chatWindow.current;
       setTimeout(() => {
@@ -56,10 +75,6 @@ class MessageField extends Component {
     } = this.props;
     const { input } = this.state;
 
-    if (!chats[chatId]) {
-      return <Redirect to="/" />;
-    }
-
     const messageElements = chats[chatId].messageList.map(messageId => (
       <Message
         key={`${messageId}${messages[messageId].text}`}
@@ -73,8 +88,8 @@ class MessageField extends Component {
         <div className="message-field" ref={this.chatWindow}>{ messageElements }</div>
         <div className="text-field">
           <TextField
-            onChange={this.handleChange}
-            onKeyUp={this.handleKeyUp}
+            onChange={this.handleChange.bind(this)}
+            onKeyUp={this.handleKeyUp.bind(this)}
             fullWidth
             margin="normal"
             type="text"

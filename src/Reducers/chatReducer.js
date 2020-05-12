@@ -1,18 +1,16 @@
 import update from 'react-addons-update';
 import { SEND_MESSAGE } from '../Actions/messageActions';
-import { ADD_CHAT, DELETE_CHAT, BLINK_CHAT } from '../Actions/chatActions';
+import { ADD_CHAT } from '../Actions/chatActions';
 
 const initialStore = {
   chats: [
     {
-      title: 'Алексей Беляков',
+      title: 'Ivan Makeev',
       messageList: [0],
-      unreadMessage: false,
     },
     {
-      title: 'Алексей Беляков',
+      title: 'Корепанов Григорий',
       messageList: [1],
-      unreadMessage: false,
     },
   ],
 };
@@ -22,39 +20,22 @@ export default (store = initialStore, action) => {
   case SEND_MESSAGE: {
     return update(store, {
       chats: {
-        [action.chatId]: {
-          messageList: { $push: [action.messageId] },
+        $merge: {
+          [action.chatId]: {
+            ...store.chats[action.chatId],
+            messageList: [...store.chats[action.chatId].messageList, action.messageId],
+          },
         },
       },
     });
   }
-
   case ADD_CHAT: {
     return update(store, {
       chats: {
-        $push: [{ title: action.title, messageList: [], unreadMessage: 0 }],
+        $push: [{ title: action.title, messageList: [] }],
       },
     });
   }
-
-  case DELETE_CHAT: {
-    return update(store, {
-      chats: {
-        $splice: [[action.chatId, action.chatId]],
-      },
-    });
-  }
-
-  case BLINK_CHAT: {
-    return update(store, {
-      chats: {
-        [action.chatId]: {
-          unreadMessage: { $set: action.isOn },
-        },
-      },
-    });
-  }
-
   default:
     return store;
   }

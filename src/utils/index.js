@@ -2,14 +2,10 @@
 
 import botPhrases from './botPhrases';
 import timeIsNow from './timeIsNow';
-import initStore, { history } from './store';
-
-const { store, persistor } = initStore();
+import store from './store';
 
 export {
   botPhrases,
   timeIsNow,
   store,
-  persistor,
-  history,
 };

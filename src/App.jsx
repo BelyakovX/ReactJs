@@ -1,21 +1,18 @@
 
 import './css/styles.css';
 import React, { Component } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import { PersistGate } from 'redux-persist/integration/react';
 import Router from './Containers/Router';
-import { store, persistor, history } from './utils';
+import { store } from './utils';
 
 export default class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ConnectedRouter history={history}>
-            <Router />
-          </ConnectedRouter>
-        </PersistGate>
+      <Provider store={store()}>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
       </Provider>
     );
   }
